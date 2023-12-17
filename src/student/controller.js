@@ -1,5 +1,5 @@
 import { pool } from "../../db.js";
-import { getStudentQuery, getStudentByIdQuery, checkEmailExistQuery, addStudentQuery} from "./queries.js";
+import { getStudentQuery, getStudentByIdQuery, checkEmailExistQuery, addStudentQuery, deleteStudentQuery, updateStudentQuery} from "./queries.js";
 
 const getStudents = (req,res) => {
     pool.query(getStudentQuery, (error,result) => {
@@ -17,8 +17,6 @@ const getStudentById = (req,res) => {
 }
 
 const addStudent = (req,res) => {
-    console.log(req.body);
-    const {name, email, age, dob} = req.body;
     console.log(`name = ${name}, email = ${email}, age = ${age}, dob = ${dob}`);
     
     pool.query(checkEmailExistQuery, [email], (error,result) => {
@@ -34,4 +32,37 @@ const addStudent = (req,res) => {
     })
 }
 
-export {getStudents, getStudentById, addStudent};
+const deleteStudent = (req,res) => {
+    const id = parseInt(req.params.id);
+    pool.query(getStudentByIdQuery, [id], (error,result) => {
+        const noStudentFound = !result.rows.length;
+        if(noStudentFound){
+            res.send("Student does not exist in database!");
+        }
+        else{
+            pool.query(deleteStudentQuery, [id], (error, result) => {
+                if (error) throw error;
+                res.status(202).send("Student removed successfully from database.");
+            })
+        }
+    })
+}
+
+const updateStudent = (req,res) => {
+    const {name, email, age, dob} = req.body;
+    const id = parseInt(req.params.id);
+    pool.query(getStudentByIdQuery, [id], (error,result) => {
+        const noStudentFound = !result.rows.length;
+        if(noStudentFound){
+            res.send("Student does not exist in database");
+        }
+        else{
+            pool.query(updateStudentQuery, [name, email, age, dob, id], (error,result) => {
+                if (error) throw error;
+                res.status(202).send("student data updated successfully");
+            })
+        }
+    })
+}
+
+export {getStudents, getStudentById, addStudent, deleteStudent, updateStudent};
