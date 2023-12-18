@@ -1,0 +1,92 @@
+{
+	"info": {
+		"_postman_id": "8d482ba3-0156-4143-a1cb-a8d7e7177b7b",
+		"name": "StudentAPI",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "All Students",
+			"id": "486403cd-70f3-4935-84b2-9e7f8b93ab5a",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "http://localhost:3000/api/v1/students/1"
+			},
+			"response": []
+		},
+		{
+			"name": "Student By Id",
+			"id": "99d5e4f1-8c57-485c-9eac-2f2144aba754",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "http://localhost:3000/api/v1/students/1"
+			},
+			"response": []
+		},
+		{
+			"name": "Add Student",
+			"id": "ab5ea17c-b000-43e3-8fc1-fd4784b67859",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"Adarsh\",\n    \"email\": \"adarsh@gmail.com\",\n    \"age\": 19,\n    \"dob\": \"2004-06-09T18:30:00.000Z\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:3000/api/v1/students/"
+			},
+			"response": []
+		},
+		{
+			"name": "Update Student",
+			"id": "635ffcfb-f2da-41ed-a3f7-c7a17ce7dcb9",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"Aviraj\",\n    \"email\": \"aviraj@gmail.com\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:3000/api/v1/students/5"
+			},
+			"response": []
+		},
+		{
+			"name": "Remove Student",
+			"id": "4be7d4f3-5e0d-41fc-97b8-fc7e8bae195f",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": "http://localhost:3000/api/v1/students/2"
+			},
+			"response": []
+		}
+	]
+}
