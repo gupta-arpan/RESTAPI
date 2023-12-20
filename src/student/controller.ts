@@ -1,7 +1,8 @@
 import { pool } from "../../db.js";
 import { getStudentQuery, getStudentByIdQuery, checkEmailExistQuery, addStudentQuery, removeStudentQuery, updateStudentQuery} from "./queries.js";
+import { Request, Response } from "express";
 
-const getStudents = async (req,res) => {
+const getStudents = async (req:Request,res:Response) => {
     try{
         const result = await pool.query(getStudentQuery);
         res.status(200).json(result.rows);
@@ -12,7 +13,7 @@ const getStudents = async (req,res) => {
     }
 }
 
-const getStudentById = async (req,res) => {
+const getStudentById = async (req: Request,res: Response) => {
     try{
         const id = parseInt(req.params.id);
         const result = await pool.query(getStudentByIdQuery, [id]);
@@ -24,7 +25,7 @@ const getStudentById = async (req,res) => {
     }
 }
 
-const addStudent = async (req,res) => {
+const addStudent = async (req: Request,res:Response) => {
     try{
         const {name, email, age, dob} = req.body;
         const result = await pool.query(checkEmailExistQuery, [email]);
@@ -41,7 +42,7 @@ const addStudent = async (req,res) => {
     }
 }
 
-const removeStudent = async (req,res) => {
+const removeStudent = async (req:Request,res:Response) => {
     try{
         const id = parseInt(req.params.id);
         const result = await pool.query(getStudentByIdQuery, [id]);
@@ -59,7 +60,7 @@ const removeStudent = async (req,res) => {
     }
 }
 
-const updateStudent = async (req,res) => {
+const updateStudent = async (req:Request,res:Response) => {
     try{
         const {name, email, age, dob} = req.body;
         const id = parseInt(req.params.id);

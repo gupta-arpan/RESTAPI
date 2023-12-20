@@ -1,5 +1,5 @@
-import express from 'express';
-import { router } from './src/student/router.js';
+import express, {Request, Response} from 'express';
+import { router } from './src/student/router';
 import bodyParser from 'body-parser';
 const app = express();
 const port = 3000;
@@ -7,7 +7,7 @@ const port = 3000;
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 
-app.get("/", (req,res) => {
+app.get("/", (req: Request,res: Response) => {
     res.send("Hehe");
 })
 
