@@ -1,5 +1,5 @@
 import express, {Request, Response} from 'express';
-import { router } from './src/student/router';
+import { router } from './router';
 import bodyParser from 'body-parser';
 const app = express();
 const port = 3000;

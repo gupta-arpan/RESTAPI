@@ -1,4 +1,4 @@
-import { pool } from "../../db.js";
+import { pool } from "./db.js";
 import { getStudentQuery, getStudentByIdQuery, checkEmailExistQuery, addStudentQuery, removeStudentQuery, updateStudentQuery} from "./queries.js";
 import { Request, Response } from "express";
 
