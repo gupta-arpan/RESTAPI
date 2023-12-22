@@ -21,16 +21,16 @@ const getStudentById = async (req: Request,res: Response) => {
     }
     catch (error){
         console.log(error);
-        res.status(500).send("Error occured while procssing the request");
+        res.status(500).send("Error occured while processing the request");
     }
 }
 
 const addStudent = async (req: Request,res:Response) => {
     try{
-        const {name, email, age, dob} = req.body;
+        const {name, email, dob} = req.body;
         const result = await pool.query(checkEmailExistQuery, [email]);
         if(!result.rows.length){
-            const result = await pool.query(addStudentQuery, [name, email, age, dob]);
+            const result = await pool.query(addStudentQuery, [name, email, dob]);
             res.status(200).send("Student is successfully registered in database.");
         }else{
             res.status(500).send("Student already exist in database!");
@@ -62,7 +62,7 @@ const removeStudent = async (req:Request,res:Response) => {
 
 const updateStudent = async (req:Request,res:Response) => {
     try{
-        const {name, email, age, dob} = req.body;
+        const {name, email, dob} = req.body;
         const id = parseInt(req.params.id);
         const result = await pool.query(getStudentByIdQuery, [id]);
         const noStudentFound = !result.rows.length;
@@ -70,7 +70,7 @@ const updateStudent = async (req:Request,res:Response) => {
             res.status(500).send("Student does not exist in database");
         }
         else{
-            const result = await pool.query(updateStudentQuery, [name, email, age, dob, id]);
+            const result = await pool.query(updateStudentQuery, [name, email, dob, id]);
             res.status(200).send("student data updated successfully");
         }
     }
