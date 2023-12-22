@@ -1,11 +1,10 @@
-import { pool } from "./db.js";
-import { getStudentQuery, getStudentByIdQuery, checkEmailExistQuery, addStudentQuery, removeStudentQuery, updateStudentQuery} from "./queries.js";
+import { db } from "./db";
 import { Request, Response } from "express";
 
 const getStudents = async (req:Request,res:Response) => {
     try{
-        const result = await pool.query(getStudentQuery);
-        res.status(200).json(result.rows);
+        const result = await db('students').select();
+        res.status(200).json(result);
     }
     catch (error){
         console.log(error);
@@ -16,8 +15,8 @@ const getStudents = async (req:Request,res:Response) => {
 const getStudentById = async (req: Request,res: Response) => {
     try{
         const id = parseInt(req.params.id);
-        const result = await pool.query(getStudentByIdQuery, [id]);
-        res.status(200).json(result.rows);
+        const result = await db('students').where('id', id);
+        res.status(200).json(result);
     }
     catch (error){
         console.log(error);
@@ -28,9 +27,16 @@ const getStudentById = async (req: Request,res: Response) => {
 const addStudent = async (req: Request,res:Response) => {
     try{
         const {name, email, dob} = req.body;
-        const result = await pool.query(checkEmailExistQuery, [email]);
-        if(!result.rows.length){
-            const result = await pool.query(addStudentQuery, [name, email, dob]);
+        const result = await db('students').where('email', email);
+        if(!result.length){
+            const result = await db('students')
+                                    .insert(
+                                        {
+                                            name: name,
+                                            email: email,
+                                            dob: dob
+                                        }
+                                    );
             res.status(200).send("Student is successfully registered in database.");
         }else{
             res.status(500).send("Student already exist in database!");
@@ -45,12 +51,12 @@ const addStudent = async (req: Request,res:Response) => {
 const removeStudent = async (req:Request,res:Response) => {
     try{
         const id = parseInt(req.params.id);
-        const result = await pool.query(getStudentByIdQuery, [id]);
-        const noStudentFound = !result.rows.length;
+        const result = await db('students').where('id', id);
+        const noStudentFound = !result.length;
         if(noStudentFound){
             res.status(500).send("Student does not exist in database!");
         }else{
-            const result = await pool.query(removeStudentQuery, [id]);
+            const result = await db('students').where('id', id).del();
             res.status(202).send("Student is removed successfully from database.")
         }
     }
@@ -64,13 +70,20 @@ const updateStudent = async (req:Request,res:Response) => {
     try{
         const {name, email, dob} = req.body;
         const id = parseInt(req.params.id);
-        const result = await pool.query(getStudentByIdQuery, [id]);
-        const noStudentFound = !result.rows.length;
+        const result = await db('students').where('id', id);
+        const noStudentFound = !result.length;
         if(noStudentFound){
             res.status(500).send("Student does not exist in database");
         }
         else{
-            const result = await pool.query(updateStudentQuery, [name, email, dob, id]);
+            const result = await db('students').where('id', id)
+                                    .update(
+                                        {
+                                            name: name,
+                                            email: email,
+                                            dob: dob
+                                        }
+                                    );
             res.status(200).send("student data updated successfully");
         }
     }
